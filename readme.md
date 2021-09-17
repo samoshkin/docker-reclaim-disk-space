@@ -14,6 +14,7 @@ This is the bash script, that does the following:
 - restarts the Docker engine (through launchctl on macOS or systemctl on Linux). Waits until the Docker is up and running after the restart.
 - prints Docker disk usage once again
 
+Read more in my blog post: [Reclaim disk space by removing stale and unused Docker data](https://medium.com/@alexeysamoshkin/reclaim-disk-space-by-removing-stale-and-unused-docker-data-a4c3bd1e4001)
 
 ## Usage
 
