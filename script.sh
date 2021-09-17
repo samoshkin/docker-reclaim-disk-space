@@ -31,7 +31,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-# Asks user for confirmation
+# Asks user for confirmation interactively
 ask_user_for_confirmation () {
 
 cat << EOF
@@ -78,12 +78,12 @@ poll_for_docker_readiness() {
   printf '\n'
 }
 
-# Checks if particular program is installed
+# Checks if a particular program is installed
 is_program_installed () {
   command -v "$1" &>/dev/null
 }
 
-# Restarts docker engine
+# Restarts the Docker engine
 restart_docker_engine () {
   if [ $DONT_RESTART_DOCKER_ENGINE -eq 1 ]; then
     return
