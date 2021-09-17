@@ -98,7 +98,7 @@ restart_docker_engine () {
       launchctl stop "$docker_service" || true;
     fi
     launchctl start com.docker.helper
-    sleep 2
+    sleep 1
     poll_for_docker_readiness
 
   # On Linux, restart through "systemd"
