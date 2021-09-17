@@ -21,19 +21,19 @@ Read more in my blog post: [Reclaim disk space by removing stale and unused Dock
 Using `curl`:
 
 ```
-$ bash -c "$(curl -fsSL https://raw.githubusercontent.com/samoshkin/docker-reclaim-disk-space/master/script.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/samoshkin/docker-reclaim-disk-space/master/script.sh)"
 ```
 
 Or using `wget`:
 
 ```
-$ bash -c "$(wget -qO - https://raw.githubusercontent.com/samoshkin/docker-reclaim-disk-space/master/script.sh)"
+bash -c "$(wget -qO - https://raw.githubusercontent.com/samoshkin/docker-reclaim-disk-space/master/script.sh)"
 ```
 
 Or just clone the repo and execute the script:
 
 ```
-$ git clone https://github.com/samoshkin/docker-reclaim-disk-space
+git clone https://github.com/samoshkin/docker-reclaim-disk-space
 ./docker-reclaim-disk-space/script.sh
 ```
 
