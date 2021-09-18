@@ -139,7 +139,9 @@ docker network prune --force
 # -a, --all, Remove all unused build cache, not just dangling ones
 # docker system prune --force --volumes
 
-if [ "$(uname)" == "Darwin" ]; then
+# Run "docker/docker-reclaim-space" only on Intel chips
+# because image is not build for ARM achitecture (Apple M1 chips)
+if [ "$(uname)" == "Darwin" ] && [ "$(uname -m)" == "x86_64" ]; then
   echo "👉 Shrink the Docker.raw file"
   docker run --privileged --pid=host docker/desktop-reclaim-space
 fi
