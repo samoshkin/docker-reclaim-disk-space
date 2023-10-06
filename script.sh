@@ -61,6 +61,23 @@ EOF
   fi
 }
 
+# On MacOS, stopping Docker Desktop for Mac might take a long time
+poll_for_docker_shutdown() {
+  printf 'Waiting for docker engine to stop:\n'
+
+  local i=0
+  while docker system info > /dev/null 2>&1;
+  do
+    printf '.%.0s' {1..$i}
+    i=$((i + 1))
+    sleep 1
+    tput el
+  done
+  sleep 1
+
+  printf '\n'
+}
+
 # On MacOS, restarting Docker Desktop for Mac might take a long time
 poll_for_docker_readiness() {
   # TODO: add new line at the end of polling
@@ -96,6 +113,7 @@ restart_docker_engine () {
     local docker_service=$(launchctl list | grep "com.docker.docker" | awk '$0 != "-" { print $3 }')
     if [ -n "$docker_service" ]; then
       launchctl stop "$docker_service" || true;
+      poll_for_docker_shutdown;
     fi
     launchctl start com.docker.helper
     sleep 1
@@ -130,21 +148,12 @@ docker volume ls -qf dangling=true | xargs -r docker volume rm
 echo "👉 Remove Docker builder cache"
 DOCKER_BUILDKIT=1 docker builder prune --all --force
 
-echo "👉 Remove docker builder cache"
-
 echo "👉 Remove networks not used by at least one container"
 docker network prune --force
 
-# echo "👉 Remove unused volumes"
-# -a, --all, Remove all unused build cache, not just dangling ones
-# docker system prune --force --volumes
-
-# Run "docker/docker-reclaim-space" only on Intel chips
-# because image is not build for ARM achitecture (Apple M1 chips)
-if [ "$(uname)" == "Darwin" ] && [ "$(uname -m)" == "x86_64" ]; then
-  echo "👉 Shrink the Docker.raw file"
-  docker run --privileged --pid=host docker/desktop-reclaim-space
-fi
+echo "👉 Shrink the Docker.raw file"
+# Uses a cross platform version of docker/desktop-reclaim-space - runs on ARM
+docker run --rm --privileged --pid=host ifullgaz/desktop-reclaim-space
 
 echo "👉 Docker disk usage (after cleanup)"
 docker system df
